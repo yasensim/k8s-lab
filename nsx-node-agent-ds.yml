@@ -1,6 +1,7 @@
 # yaml template for nsx-node-agent and nsx-kube-proxy DaemonSet
 # Right kubernetes API parameters and NCP Docker image must be
 # specified.
+# This yaml file is part of NCP 2.4.0 release.
 
 # ConfigMap for ncp.ini
 apiVersion: v1
@@ -53,7 +54,7 @@ data:
     # Log level for the NCP operations. If set, overrides the level specified
     # for the root logger. Possible values are NOTSET, DEBUG, INFO, WARNING,
     # ERROR, CRITICAL
-    loglevel=INFO
+    #loglevel=None
 
     # Log level for the NSX API client operations. If set, overrides the level
     # specified for the root logger. Possible values are NOTSET, DEBUG, INFO,
@@ -62,10 +63,16 @@ data:
 
     # Once enabled, all projects in this cluster will be mapped to a NAT
     # topology in NSX backend
-    enable_snat = True
+    #enable_snat = True
 
     # The type of container node. Possible values are HOSTVM, BAREMETAL.
-    node_type = HOSTVM
+    #node_type = HOSTVM
+
+    # The time in seconds for NCP/nsx_node_agent to recover the connection to
+    # NSX manager/container orchestrator adaptor/Hyperbus before exiting.
+    # If the value is 0, NCP/nsx_node_agent won't exit automatically when
+    # the connection check fails
+    #connect_retry_timeout = 0
 
     [ha]
     #
@@ -98,13 +105,13 @@ data:
     # IP address of the Kubernetes API Server. If not set, will try to
     # read and use the Kubernetes Service IP from environment variable
     # KUBERNETES_SERVICE_HOST.
-    apiserver_host_ip = 10.1.0.10
+    apiserver_host_ip = 10.96.0.1
 
     # Port of the Kubernetes API Server.
     # Set to 6443 for https. If not set, will try to
     # read and use the Kubernetes Service port from environment
     # variable KUBERNETES_SERVICE_PORT.
-    apiserver_host_port = 6443
+    apiserver_host_port = 443
 
     # Specify a CA bundle file to use in verifying the Kubernetes API server
     # certificate. (string value)
@@ -128,7 +135,7 @@ data:
     # Log level for the kubernetes adaptor. If set, overrides the level specified
     # for the root logger. Possible values are NOTSET, DEBUG, INFO, WARNING,
     # ERROR, CRITICAL
-    loglevel=INFO
+    #loglevel=None
 
     [nsx_node_agent]
     #
@@ -195,7 +202,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - check_pod_liveness nsx-node-agent
+                - timeout 5 check_pod_liveness nsx-node-agent
             initialDelaySeconds: 5
             timeoutSeconds: 5
             periodSeconds: 10
@@ -237,7 +244,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - check_pod_liveness nsx-kube-proxy
+                - timeout 5 check_pod_liveness nsx-kube-proxy
             initialDelaySeconds: 5
             periodSeconds: 5
           securityContext:

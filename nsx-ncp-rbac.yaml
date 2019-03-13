@@ -65,6 +65,18 @@ rules:
      - list
      - update
      - patch
+ # NCP needs permission to CRUD custom resource nsxerrors
+ - apiGroups:
+   # The api group is specified in custom resource definition for nsxerrors
+   - vmware.eng.com
+   resources:
+     - nsxerrors
+   verbs:
+     - create
+     - get
+     - list
+     - patch
+     - delete
  - apiGroups:
    - ""
    - extensions
