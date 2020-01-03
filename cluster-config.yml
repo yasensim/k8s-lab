@@ -1,0 +1,23 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+imageRepository: vmware.io
+kubernetesVersion: v1.17.0+vmware.1
+clusterName: kubernetes
+controlPlaneEndpoint: "20.20.20.20:6443"
+apiServer:
+  certSANs:
+  - "20.20.20.20"
+dns:
+  type: CoreDNS
+  imageRepository: vmware.io
+  imageTag: v1.6.5_vmware.1
+etcd:
+  local:
+    imageRepository: vmware.io
+    imageTag: v3.4.3_vmware.1
+    dataDir: /var/lib/etcd
+networking:
+  dnsDomain: cluster.local
+  podSubnet: 10.4.0.0/16
+  serviceSubnet: 10.96.0.0/12
+

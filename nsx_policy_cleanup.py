@@ -422,8 +422,9 @@ class NSXClient(object):
                     if snat_rule['source_network'] == cidr:
                         ncp_snat_rule = snat_rule
                         break
-                self.release_snat_external_ip(ncp_snat_rule)
-                self.delete_policy_resource_by_path(ncp_snat_rule['path'])
+                if ncp_snat_rule:
+                    self.release_snat_external_ip(ncp_snat_rule)
+                    self.delete_policy_resource_by_path(ncp_snat_rule['path'])
             except Exception as e:
                 self._cleanup_errors.append(
                     "ERROR: Failed to unconfigure nat rule for %s "
@@ -992,7 +993,7 @@ class NSXClient(object):
             except Exception as e:
                 self._cleanup_errors.append(
                     "ERROR: Failed to delete snat_rule for %s-%s, "
-                    "error %s" % (nat_rule.get('translated_network'),
+                    "error %s" % (nat_rule['translated_network'],
                                   nat_rule['id'], e))
             else:
                 print("Successfully deleted nat_rule for %s-%s" %
