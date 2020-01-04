@@ -718,7 +718,7 @@ data:
     #resource_watcher_thread_pool_size = 1
 
     # User specified IP address for HTTP and HTTPS ingresses
-    #http_and_https_ingress_ip = <None>
+    http_and_https_ingress_ip = 192.168.150.1
 
     # Set this to True to enable NCP to create tier1 router, first segment and
     # default SNAT IP for VirtualNetwork CRD, and then create segment port for
@@ -939,7 +939,7 @@ data:
     #resource_watcher_thread_pool_size = 1
 
     # User specified IP address for HTTP and HTTPS ingresses
-    #http_and_https_ingress_ip = <None>
+    http_and_https_ingress_ip = 192.168.150.1
 
     # Set this to True to enable NCP to create tier1 router, first segment and
     # default SNAT IP for VirtualNetwork CRD, and then create segment port for
