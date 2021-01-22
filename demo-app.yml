@@ -549,7 +549,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:alpine
+        image: public.ecr.aws/n5y6s5k1/redis:alpine
         ports:
         - containerPort: 6379
         readinessProbe:
